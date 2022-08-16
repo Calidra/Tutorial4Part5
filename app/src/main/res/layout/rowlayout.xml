@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="50px"
+        android:layout_height="50px"
+        android:layout_marginLeft="4px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="4px"
+        android:src="@drawable/image4" >
+    </ImageView>
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30px"
+        android:layout_toRightOf="@id/icon"
+        android:text="@+id/label"
+        android:textSize="40px"></TextView>
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_toRightOf="@id/label"
+        android:textSize="21px"
+        android:text="Happy" />
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="21px"
+        android:layout_toRightOf="@id/checkBox1"
+        android:text="Ready" />
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="21px"
+        android:layout_toRightOf="@id/checkBox2"
+        android:text="Completed" />
+
+    <Button
+        android:id="@+id/check_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkBox3"
+        android:text="display" />
+</RelativeLayout>

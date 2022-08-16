@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Tutorial4Part5</string>
+    <string-array name="Pizza_Array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+</resources>
