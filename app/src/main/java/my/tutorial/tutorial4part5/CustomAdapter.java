@@ -62,7 +62,6 @@ public class CustomAdapter extends ArrayAdapter<StudentInfo> {
 
         //get the check boxes
         CheckBox happy = currentItemView.findViewById(R.id.checkBox1);
-        CheckBox ready = currentItemView.findViewById(R.id.checkBox2);
         CheckBox completed = currentItemView.findViewById(R.id.checkBox3);
 
         happy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -80,20 +79,6 @@ public class CustomAdapter extends ArrayAdapter<StudentInfo> {
             }
         });
 
-        ready.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(currentNumberPosition.ready)
-                {
-                    currentNumberPosition.ready = false;
-                }
-                else
-                {
-                    currentNumberPosition.ready = true;
-                }
-
-            }
-        });
 
         completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -110,7 +95,6 @@ public class CustomAdapter extends ArrayAdapter<StudentInfo> {
         });
 
 
-
         Button buttonClicked = currentItemView.findViewById(R.id.check_button);
 
         buttonClicked.setOnClickListener(new View.OnClickListener() {
@@ -122,10 +106,6 @@ public class CustomAdapter extends ArrayAdapter<StudentInfo> {
                     returnValue = returnValue + "Happy ";
                 }
 
-                if(ready.isChecked())
-                {
-                    returnValue = returnValue + "Ready ";
-                }
 
                 if(completed.isChecked())
                 {

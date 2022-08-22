@@ -1,9 +1,17 @@
 package my.tutorial.tutorial4part5;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +21,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.google.android.material.navigation.NavigationView;
 
-public class RetrieveRow extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class RetrieveRow extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseManager mydManager;
     String response_server;
@@ -24,64 +35,61 @@ public class RetrieveRow extends AppCompatActivity {
     Button checklist;
     TextView displayResults;
 
+    private RecyclerView mRVShoppingList;
+    private CustomRecyclerView mAdapter;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrieve_row);
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        displayResults = findViewById(R.id.resp3);
+        toolbar  = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
         mydManager = new DatabaseManager(RetrieveRow.this);
         studentReturn = new ArrayList<StudentInfo>();
         studentReturn = mydManager.retrieveRows();
-        list =  findViewById(R.id.listView);
-        displayResults = findViewById(R.id.resp3);
-        ArrayAdapter<StudentInfo> adapter = new ArrayAdapter<StudentInfo>(this, android.R.layout.simple_list_item_1, android.R.id.text1, studentReturn);
-        list.setAdapter(adapter);
-
-        // use your custom layout
-        CustomAdapter adapter2 = new CustomAdapter(this, studentReturn);
-        list= (ListView) findViewById(R.id.listView);
-        list.setAdapter(adapter2);
 
 
-
-//
-//        list.setOnItemClickListener((parent, v, position, id) -> {
-//            //uncomment line 40 to highlight item choosed when CHOICE_MODE_MULTIPLE is on
-//            //       v.setBackgroundResource(R.drawable.ic_launcher_background);
-//            String item = (String) list.getAdapter().getItem(position);
-//            Toast.makeText(getApplicationContext(), item + " selected", Toast.LENGTH_LONG).show();
-//        });
+        // Setup and Handover data to recyclerview
+        mRVShoppingList = (RecyclerView) findViewById(R.id.list);
+        mAdapter = new CustomRecyclerView(RetrieveRow.this, studentReturn);
+        mRVShoppingList.setAdapter(mAdapter);
+        mRVShoppingList.setLayoutManager(new LinearLayoutManager(RetrieveRow.this));
     }
 
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
+    {
+        Log.d("Item Selector", String.valueOf(item.getItemId()));
+        switch (item.getItemId())
+        {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add) {
-            startActivity(new Intent(RetrieveRow.this, AddRow.class));
-            return true;
+            case R.id.add_row:
+                startActivity(new Intent(RetrieveRow.this, AddRow.class));
+                break;
+            case R.id.retrieve_rows:
+                startActivity(new Intent(RetrieveRow.this, RetrieveRow.class));
+                break;
+            case R.id.nav_main:
+                startActivity(new Intent(RetrieveRow.this, MainActivity.class));
+                break;
         }
-
-        if (id == R.id.action_retrieve) {
-            startActivity(new Intent(RetrieveRow.this, RetrieveRow.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //close navigation drawer
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
     public void buttonClicked2(View view)
@@ -89,7 +97,11 @@ public class RetrieveRow extends AppCompatActivity {
         String stringTest = "";
         for(int i = 0; i < studentReturn.size(); i++)
         {
-            stringTest =  stringTest + studentReturn.get(i).studentID + ": Happy: " + studentReturn.get(i).happy + ": Ready: " + studentReturn.get(i).ready + ": Completed: " + studentReturn.get(i).completed +"\n";
+            if(studentReturn.get(i).happy)
+            {
+                stringTest =  stringTest + studentReturn.get(i).studentID + "\n";
+            }
+
         }
         displayResults.setText(stringTest);
     }
